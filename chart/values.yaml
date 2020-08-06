@@ -1,0 +1,39 @@
+app_name: django-scaffold
+replicas: 1
+# build info not used atm
+build:
+  build_tag: latest
+  base_image: python-38:latest
+  enabled: false
+  source_docker_file_path: Dockerfile
+image_repository: image-registry.openshift-image-registry.svc:5000
+image_name: django-scaffold
+image_namespace:
+image_tag: latest
+
+# OCP route
+route: true
+
+# Database
+database:
+  service_host: django-scaffold-db-postgresql
+  service_port: 5432
+  name: neverendingblog
+  user: bastian
+  password: balthazar
+
+#Django
+#have to get this from vault etc. maybe
+secret_key: gs7(p)fk=pf2(kbg*1wz$x+hnmw@y6%ij*x&pq4(^y8xjq$q#f
+environment: dev
+
+postgresql:
+  securityContext:
+    runAsUser: 1000660000
+    fsGroup: 1000660000
+  global:
+    postgresql:
+      #TODO: this should be get from secrets
+      postgresqlDatabase: neverendingblog
+      postgresqlUsername: bastian
+      postgresqlPassword: balthazar

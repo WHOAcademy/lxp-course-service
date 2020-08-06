@@ -127,3 +127,20 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# pycharm
+.idea/
+
+.DS_Store
+
+#tests
+cover/
+xunittest.xml
+
+# Chart dependencies
+**/charts/*.tgz
+**/requirements.lock
+**/Chart.lock
+
+.history
+secrets.yaml
