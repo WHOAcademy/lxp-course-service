@@ -6,9 +6,9 @@ build:
   base_image: python-38:latest
   enabled: false
   source_docker_file_path: Dockerfile
-image_repository: image-registry.openshift-image-registry.svc:5000
+image_repository: quay.io
 image_name: lxp-course-service
-image_namespace:
+image_namespace: whoacademy
 image_tag: latest
 
 # OCP route

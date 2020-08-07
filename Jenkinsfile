@@ -99,7 +99,7 @@ pipeline {
                     env.VERSION = sh(returnStdout: true, script: "grep -oP \"(?<=version=')[^']*\" setup.py").trim()
                     env.VERSIONED_APP_NAME = "${NAME}-${VERSION}"
                     env.PACKAGE = "${VERSIONED_APP_NAME}.tar.gz"
-                    env.SECRET_KEY = 'xxub4w!i2$*bb#s5r%od4qepb7i-2@pq+yvna-2sj5d!tc8#8f' //TODO: get it from secret vault
+                    env.SECRET_KEY = 'gs7(p)fk=pf2(kbg*1wz$x+hnmw@y6%ij*x&pq4(^y8xjq$q#f' //TODO: get it from secret vault
                 }
                 sh 'printenv'
 
@@ -224,6 +224,7 @@ pipeline {
                     steps {
                         // TODO - if SANDBOX, create release in rando ns
                         sh '''
+                            helm uninstall ${APP_NAME} || rc=$?
                             helm upgrade --install ${APP_NAME} \
                                 --namespace=${TARGET_NAMESPACE} \
                                 http://${SONATYPE_NEXUS_SERVICE_SERVICE_HOST}:${SONATYPE_NEXUS_SERVICE_SERVICE_PORT}/repository/${NEXUS_REPO_HELM}/${APP_NAME}-${VERSION}.tgz

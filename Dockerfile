@@ -1,4 +1,4 @@
-FROM image-registry.openshift-image-registry.svc:5000/openshift/python-38:latest
+FROM quay.io/whoacademy/python-38:latest
 
 ENV PYTHONUNBUFFERED 1
 
