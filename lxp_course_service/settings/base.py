@@ -44,9 +44,11 @@ INSTALLED_APPS = [
     # Dependencies
     'rest_framework',
     'drf_yasg',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -127,3 +129,9 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 TEST_RUNNER = 'lxp_course_service.testrunners.NoseUnitTestSuiteRunner'
+
+
+# Cross Origin Resource Sharing (CORS) Configuration
+# https://github.com/adamchainz/django-cors-headers#configuration
+
+CORS_ORIGIN_ALLOW_ALL = True
