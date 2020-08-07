@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "django-scaffold.name" -}}
+{{- define "lxp-course-service.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "django-scaffold.fullname" -}}
+{{- define "lxp-course-service.fullname" -}}
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "django-scaffold.chart" -}}
+{{- define "lxp-course-service.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
 Common labels
 */}}
-{{- define "django-scaffold.labels" -}}
-helm.sh/chart: {{ include "django-scaffold.chart" . }}
-{{ include "django-scaffold.selectorLabels" . }}
+{{- define "lxp-course-service.labels" -}}
+helm.sh/chart: {{ include "lxp-course-service.chart" . }}
+{{ include "lxp-course-service.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,8 +45,8 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "django-scaffold.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "django-scaffold.name" . }}
+{{- define "lxp-course-service.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "lxp-course-service.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-deploymentconfig: {{ include "django-scaffold.fullname" . }}
+deploymentconfig: {{ include "lxp-course-service.fullname" . }}
 {{- end -}}

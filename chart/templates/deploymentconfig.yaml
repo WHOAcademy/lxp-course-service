@@ -2,13 +2,13 @@ apiVersion: apps.openshift.io/v1
 kind: DeploymentConfig
 metadata:
   labels:
-    {{- include "django-scaffold.labels" . | nindent 4 }}
-  name: {{ include "django-scaffold.fullname" . }}
+    {{- include "lxp-course-service.labels" . | nindent 4 }}
+  name: {{ include "lxp-course-service.fullname" . }}
 spec:
   replicas: {{ .Values.replicas }}
   revisionHistoryLimit: 10
   selector:
-    {{- include "django-scaffold.selectorLabels" . | nindent 4 }}
+    {{- include "lxp-course-service.selectorLabels" . | nindent 4 }}
   strategy:
     activeDeadlineSeconds: 21600
     resources: {}
@@ -22,12 +22,12 @@ spec:
   template:
     metadata:
       labels:
-        {{- include "django-scaffold.selectorLabels" . | nindent 8 }}
+        {{- include "lxp-course-service.selectorLabels" . | nindent 8 }}
     spec:
       containers:
       - image: "{{ .Values.image_repository }}/{{ .Values.image_namespace | default .Release.Namespace }}/{{ .Values.image_name }}:{{ .Values.image_tag }}"
         imagePullPolicy: Always
-        name: {{ include "django-scaffold.name" . }}
+        name: {{ include "lxp-course-service.name" . }}
         ports:
         - containerPort: 8080
           protocol: TCP

@@ -1,1 +1,1 @@
-# Django Scaffold
+# LXP Course Service

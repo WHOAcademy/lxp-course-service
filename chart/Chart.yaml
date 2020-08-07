@@ -1,6 +1,6 @@
 apiVersion: v2
-name: django-scaffold
-description: A Helm chart to deploy the sample django app
+name: lxp-course-service
+description: A Helm chart to deploy the lxp course service
 type: application
 # HelmChart Version
 version: 1.0.1
@@ -12,6 +12,3 @@ dependencies:
   - name: postgresql
     version: "8.6.4"
     repository: https://charts.bitnami.com/bitnami
-
-maintainers:
-  - name: mabulgu

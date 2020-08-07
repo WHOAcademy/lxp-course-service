@@ -5,11 +5,11 @@ pipeline {
 
     environment {
         // GLobal Vars
-        NAME = "django-scaffold"
+        NAME = "lxp-course-service"
         PROJECT= "labs"
 
         // Config repo managed by ArgoCD details
-        ARGOCD_CONFIG_REPO = "github.com/who-lxp/lxp-config.git"
+        ARGOCD_CONFIG_REPO = "github.com/WHOAcademy/lxp-config.git"
         ARGOCD_CONFIG_REPO_PATH = "lxp-deployment/values-test.yaml"
         ARGOCD_CONFIG_REPO_BRANCH = "master"
 
@@ -58,7 +58,7 @@ pipeline {
                             env.IMAGE_REPOSITORY = "quay.io"
                             // app name for master is just learning-experience-platform or something
                             env.APP_NAME = "${NAME}".replace("/", "-").toLowerCase()
-                            env.TARGET_NAMESPACE = "who-lxp"
+                            env.TARGET_NAMESPACE = "whoacademy"
                         }
                     }
                 }
@@ -107,7 +107,7 @@ pipeline {
                 sh 'pip install -r requirements.txt'
 
                 echo '### Running tests ###'
-                sh 'python manage.py test   --with-coverage --cover-erase --cover-package=django_app --with-xunit --xunit-file=xunittest.xml --cover-branches --cover-html'
+                sh 'python manage.py test   --with-coverage --cover-erase --cover-package=course_app --with-xunit --xunit-file=xunittest.xml --cover-branches --cover-html'
 
                 echo '### Packaging App for Nexus ###'
                 sh '''
