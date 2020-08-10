@@ -1,7 +1,7 @@
 from .base import *
 
 
-'''DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('DATABASE_NAME'),
@@ -11,4 +11,3 @@ from .base import *
         'PORT': os.getenv('DATABASE_SERVICE_PORT'),
     }
 }
-'''
