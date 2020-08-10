@@ -40,6 +40,7 @@ postgresql:
 
 # Horizontal Pod Autoscaler
 hpa:
+  enabled: false
   target:
     apiVersion: apps.openshift.io/v1
     kind: DeploymentConfig
