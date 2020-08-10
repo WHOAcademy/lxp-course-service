@@ -269,7 +269,10 @@ pipeline {
             }
         }
 
-        stage("End to End Test") {
+        stage("Trigger System Tests") {
+            options {
+                skipDefaultCheckout(true)
+            }
             agent {
                 node {
                     label "master"
@@ -282,6 +285,7 @@ pipeline {
                 sh  '''
                     echo "TODO - Run tests"
                 '''
+                build job: 'system-tests/master', parameters: [[$class: 'StringParameterValue', name: 'APP_NAME', value: "${APP_NAME}" ],[$class: 'StringParameterValue', name: 'VERSION', value: "${VERSION}"]], wait: false
             }
         }
     }
