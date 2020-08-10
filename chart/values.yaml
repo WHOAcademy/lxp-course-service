@@ -37,3 +37,14 @@ postgresql:
       postgresqlDatabase: neverendingblog
       postgresqlUsername: bastian
       postgresqlPassword: balthazar
+
+# Horizontal Pod Autoscaler
+hpa:
+  enabled: false
+  target:
+    apiVersion: apps.openshift.io/v1
+    kind: DeploymentConfig
+  minReplicas: 1
+  maxReplicas: 2
+  cpuTarget: 1000m
+  memTarget: 500Mi
