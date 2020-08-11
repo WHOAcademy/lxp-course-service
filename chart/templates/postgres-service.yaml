@@ -5,7 +5,7 @@ kind: Service
 metadata:
   name: {{ template "postgresql.fullname" . }}
   labels:
-    app: {{ .Values.app_name }}
+    app: {{ .Chart.Name }}
 spec:
   ports:
     - name: postgresql
@@ -13,7 +13,7 @@ spec:
       protocol: TCP
       targetPort: {{ .Values.postgresql.service.port | default "5432" }}
   selector:
-    app: {{ .Values.app_name }}
+    app: {{ .Chart.Name }}
     deploymentconfig: {{ template "postgresql.name" . }}
   sessionAffinity: None
   type: {{ .Values.postgresql.service.type | default "ClusterIP" }}

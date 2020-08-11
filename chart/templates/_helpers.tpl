@@ -56,7 +56,7 @@ deploymentconfig: {{ include "lxp-course-service.fullname" . }}
   We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "postgresql.name" -}}
-{{- printf "postgresql-%s" .Values.app_name | trunc 63 | trimSuffix "-" -}}
+{{- printf "postgresql-%s" .Chart.Name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
@@ -64,7 +64,7 @@ deploymentconfig: {{ include "lxp-course-service.fullname" . }}
   We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "postgresql.fullname" -}}
-{{- printf "postgresql-%s-%s" .Release.Name .Values.app_name | trunc 63 | trimSuffix "-" -}}
+{{- printf "postgresql-%s-%s" .Release.Name .Chart.Name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
@@ -72,7 +72,7 @@ deploymentconfig: {{ include "lxp-course-service.fullname" . }}
 */}}
 {{- define "postgresql.hostname" -}}
 {{- if .Values.postgresql.enabled -}}
-{{- printf "%s-%s" "postgresql" .Values.app_name | trunc 63 | trimSuffix "-" -}}
+{{- printf "%s-%s" "postgresql" .Chart.Name | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
 {{- printf "%s" .Values.postgresql.postgresqlServer -}}
 {{- end -}}

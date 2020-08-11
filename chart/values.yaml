@@ -1,4 +1,3 @@
-app_name: lxp-course-service
 replicas: 1
 # build info not used atm
 build:
