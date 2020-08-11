@@ -44,7 +44,7 @@ spec:
           - name: APP_ENV
             value: "{{ .Values.environment }}"
           - name: DATABASE_SERVICE_HOST
-            value: db-{{ include "lxp-course-service.fullname" . }}
+            value: db-{{ include "lxp-course-service.name" . }}
           - name: DATABASE_SERVICE_PORT
             value: "{{ .Values.database.service_port }}"
           - name: DATABASE_NAME
