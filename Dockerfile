@@ -14,4 +14,4 @@ COPY . $HOME
 
 RUN pip install -r requirements.txt
 
-CMD python manage.py migrate && python manage.py runserver
+CMD python manage.py migrate && python manage.py runserver 8080
