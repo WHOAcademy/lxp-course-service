@@ -189,13 +189,13 @@ pipeline {
                     yq w -i chart/Chart.yaml 'appVersion' ${VERSION}
                     yq w -i chart/Chart.yaml 'version' ${VERSION}
                     yq w -i chart/Chart.yaml 'name' ${APP_NAME}
+                    yq w -i chart/Chart.yaml 'appName' ${APP_NAME}
 
                     # probs point to the image inside ocp cluster or perhaps an external repo?
                     yq w -i chart/values.yaml 'image_repository' ${IMAGE_REPOSITORY}
                     yq w -i chart/values.yaml 'image_name' ${APP_NAME}
                     yq w -i chart/values.yaml 'image_namespace' ${TARGET_NAMESPACE}
                     yq w -i chart/values.yaml 'image_tag' ${VERSION}
-                    yq w -i chart/values.yaml 'postgresql.fullnameOverride' db-${APP_NAME}
 
                     # latest built image
                     yq w -i chart/values.yaml 'app_tag' ${VERSION}
