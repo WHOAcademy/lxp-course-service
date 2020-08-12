@@ -134,3 +134,9 @@ TEST_RUNNER = 'lxp_course_service.testrunners.NoseUnitTestSuiteRunner'
 # https://github.com/adamchainz/django-cors-headers#configuration
 
 CORS_ORIGIN_ALLOW_ALL = True
+
+# Redis cache configurations
+# https://github.com/jazzband/django-redis#configure-as-session-backend
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
