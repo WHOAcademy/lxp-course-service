@@ -12,13 +12,13 @@ DATABASES = {
     }
 }
 
-CACHES = {
- "default": {
-     "BACKEND": "django_redis.cache.RedisCache",
-     "LOCATION": "redis://172.30.214.86:13891/1",
-     "OPTIONS": {
-         "CLIENT_CLASS": "django_redis.client.DefaultClient",
-         "PASSWORD": "kEl0kMBd"
-     }
- }
-}
+#CACHES = {
+# "default": {
+#     "BACKEND": "django_redis.cache.RedisCache",
+#     "LOCATION": "redis://172.30.214.86:13891/1",
+#     "OPTIONS": {
+#         "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         "PASSWORD": "kEl0kMBd"
+#     }
+# }
+#}
