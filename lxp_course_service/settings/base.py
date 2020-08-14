@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'lxp_course_service.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backendsCACHES.sqlite3',
         'NAME': os.path.join(BASE_DIR, '../db.sqlite3'),
     }
 }
