@@ -64,6 +64,15 @@ spec:
                 name: {{ template "postgresql.name" . }}
           - name: SECRET_KEY
             value: "{{ .Values.secret_key }}"
+          - name: REDIS_SERVICE_HOST
+            value: {{ template "redis.fullname" . }}
+          - name: REDIS_SERVICE_PORT
+            value: "{{ .Values.redis.service.port }}"
+          - name: REDIS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: database-password
+                name: {{ template "redis.name" . }}
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler

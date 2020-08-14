@@ -1,6 +1,5 @@
 from .base import *
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -13,12 +12,13 @@ DATABASES = {
 }
 
 CACHES = {
- "default": {
-     "BACKEND": "django_redis.cache.RedisCache",
-     "LOCATION": "redis://172.30.238.94:6379/1",
-     "OPTIONS": {
-         "CLIENT_CLASS": "django_redis.client.DefaultClient",
-         "PASSWORD": "somepassword" #TODO: get this from env secret
-     }
- }
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://{SERVICE_HOST}:{SERVICE_PORT}/1".format(SERVICE_HOST=os.getenv('REDIS_SERVICE_HOST'),
+                                                                     SERVICE_PORT=os.getenv('REDIS_SERVICE_PORT')),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "PASSWORD": os.getenv('REDIS_PASSWORD')
+        }
+    }
 }

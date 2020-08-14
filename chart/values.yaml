@@ -53,3 +53,13 @@ hpa:
   maxReplicas: 2
   cpuTarget: 1000m
   memTarget: 500Mi
+
+redis:
+  enabled: true
+  memory_limit: 512Mi
+  is_namespace: openshift
+  redis_password: 'somepassword'
+  redis_version: "5"
+  volume_capacity: 1Gi
+  service:
+    port: 6379
