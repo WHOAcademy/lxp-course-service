@@ -74,5 +74,4 @@ spec:
       lastTriggeredImage: ""
     type: ImageChange
   - type: ConfigChange
-status: {}
 {{- end }}
