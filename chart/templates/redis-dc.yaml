@@ -19,8 +19,7 @@ spec:
         name: {{ template "redis.name" . }}
     spec:
       containers:
-      - capabilities: {}
-        env:
+      - env:
         - name: REDIS_PASSWORD
           valueFrom:
             secretKeyRef:
