@@ -144,3 +144,6 @@ xunittest.xml
 
 .history
 secrets.yaml
+
+# Redis cache database
+dump.rdb
