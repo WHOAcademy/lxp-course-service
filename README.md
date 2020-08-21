@@ -19,5 +19,5 @@ export SECRET_KEY="abcd"
 export TEST_DATABASE_SERVICE_HOST="localhost"
 export TEST_DATABASE_SERVICE_PORT="5432"
 
-python manage.py test --settings=lxp_course_topic_service.settings.test
+python manage.py test --settings=lxp_course_service.settings.test
 ```
