@@ -12,8 +12,27 @@ class CourseListView(generics.ListAPIView):
     model = models.CourseModel
     serializer_class = serializers.CourseSerializer
     cache_key = 'course-list'
-    queryset = model.objects.all()
 
+    def get_queryset(self):
+        queryset = cache.get(self.cache_key, None)
+        if queryset:
+            return queryset
+        else:
+            queryset = self.model.objects.all()
+            cache_ttl = constants['CACHE_TTL']['SHORT']
+            cache.set(self.cache_key, queryset, timeout=cache_ttl)
+            return queryset
+
+
+class CourseDetailsView(generics.RetrieveAPIView):
+    """
+    Use this endpoint to GET only one course's details, based on its id.
+    """
+    lookup_field = 'id'
+    model = models.CourseModel
+    serializer_class = serializers.CourseSerializer
+    cache_key = 'course-list'
+    
     def get_queryset(self):
         queryset = cache.get(self.cache_key, None)
         if queryset:
