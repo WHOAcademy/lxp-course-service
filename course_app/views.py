@@ -23,3 +23,15 @@ class CourseListView(generics.ListAPIView):
             cache_ttl = constants['CACHE_TTL']['SHORT']
             cache.set(self.cache_key, queryset, timeout=cache_ttl)
             return queryset
+
+
+class CourseDetailsView(generics.RetrieveAPIView):
+    """
+    Use this endpoint to GET only one course's details.
+    """
+    lookup_field = 'id'
+    model = models.CourseModel
+    serializer_class = serializers.CourseSerializer
+    queryset = model.objects.all()
+    
+    # TODO: take cache into account
