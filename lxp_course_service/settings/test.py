@@ -10,3 +10,15 @@ DATABASES = {
         'PORT': os.getenv('TEST_DATABASE_SERVICE_PORT'),
     }
 }
+
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-erase',
+    '--cover-package=course_app',
+    '--with-xunit',
+    '--xunit-file=xunittest.xml',
+    '--cover-branches',
+    '--cover-html',
+    '--exclude-dir-file=exclude_dirs.txt',
+    '--exclude-test-file=exclude_tests.txt'
+]
