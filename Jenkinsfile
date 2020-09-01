@@ -327,7 +327,7 @@ pipeline {
             }
         }
 
-                stage("Scan APIs") {
+        stage("Scan APIs") {
             failFast true
             parallel {
                 stage("sandbox - api scan"){
