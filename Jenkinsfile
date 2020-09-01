@@ -344,7 +344,6 @@ pipeline {
                     }
                     steps {
                         sh '''
-                            sleep 300000
                             /zap/zap-baseline.py -r index.html -t http://${APP_NAME}.${TARGET_NAMESPACE}:8080/api/courses || return_code=$?
                             echo "exit value was  - " $return_code
                         '''
