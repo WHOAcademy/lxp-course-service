@@ -10,7 +10,6 @@ setup(name='lxp-course-service',
           'nose==1.3.7',
           'coverage==5.2.1',
           'django-nose==1.4.6',
-          'nose-exclude==0.5.0',
           'drf-yasg==1.17.1',
           'django-cors-headers==3.4.0',
           'django-redis==4.12.1'

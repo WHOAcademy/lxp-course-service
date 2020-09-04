@@ -1,0 +1,27 @@
+[run]
+branch = True
+source = course_app
+omit =
+    */migrations/*
+    *__init__.py*
+    course_app/admin.py
+    course_app/apps.py
+    */venv/*
+    */lxp_course_service/*
+    manage.py
+    setup.py
+    */tests/*
+
+[report]
+fail_under = 100
+show_missing = True
+omit =
+    */migrations/*
+    *__init__.py*
+    course_app/admin.py
+    course_app/apps.py
+    */venv/*
+    */lxp_course_service/*
+    manage.py
+    setup.py
+    */tests/*
