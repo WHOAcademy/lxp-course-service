@@ -57,17 +57,17 @@ spec:
             valueFrom:
               secretKeyRef:
                 key: {{ default "database" }}
-                name: {{ template "postgresql.name" . }}
+                name: {{ template "postgresql.fullname" . }}
           - name: DATABASE_USER
             valueFrom:
               secretKeyRef:
                 key: {{ default "username" }}
-                name: {{ template "postgresql.name" . }}
+                name: {{ template "postgresql.fullname" . }}
           - name: DATABASE_PASSWORD
             valueFrom:
               secretKeyRef:
                 key: {{ default "password" }}
-                name: {{ template "postgresql.name" . }}
+                name: {{ template "postgresql.fullname" . }}
           - name: SECRET_KEY
             value: "{{ .Values.secret_key }}"
           - name: REDIS_SERVICE_HOST

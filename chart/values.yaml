@@ -8,7 +8,7 @@ build:
 image_repository: quay.io
 image_name: lxp-course-service
 image_namespace: whoacademy
-image_tag: 1.1.1
+image_tag: 1.4.2
 
 # OCP route
 route: true
