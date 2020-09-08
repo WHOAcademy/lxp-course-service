@@ -6,7 +6,7 @@ from django.urls import reverse
 from course_app.models import CourseModel
 
 
-class TestSkillView(APITestCase):
+class TestCourseView(APITestCase):
 
     def test_get_all(self):
         course_1 = CourseModel.objects.create(title="Title1", description="This is a description", duration_seconds=1200,
