@@ -327,6 +327,45 @@ pipeline {
             }
         }
 
+        stage("Scan APIs") {
+            failFast true
+            parallel {
+                stage("sandbox - api scan"){
+                    options {
+                        skipDefaultCheckout(true)
+                    }
+                    agent {
+                        node {
+                            label "jenkins-slave-zap"
+                        }
+                    }
+                    when {
+                        expression { GIT_BRANCH.startsWith("dev") || GIT_BRANCH.startsWith("feature") || GIT_BRANCH.startsWith("fix") }
+                    }
+                    steps {
+                        sh '''
+                            /zap/zap-baseline.py -r index.html -t http://${APP_NAME}.${TARGET_NAMESPACE}:8080/api/courses || return_code=$?
+                            echo "exit value was  - " $return_code
+                        '''
+                    }
+                    post {
+                        always {
+                          // publish html
+                          publishHTML target: [
+                              allowMissing: false,
+                              alwaysLinkToLastBuild: false,
+                              keepAll: true,
+                              reportDir: '/zap/wrk',
+                              reportFiles: 'index.html',
+                              reportName: 'OWASP Zed Attack Proxy'
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+
+
         stage("Trigger System Tests") {
             options {
                 skipDefaultCheckout(true)
