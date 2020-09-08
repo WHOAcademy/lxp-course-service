@@ -11,7 +11,8 @@ pipeline {
         // Config repo managed by ArgoCD details
         ARGOCD_CONFIG_REPO = "github.com/WHOAcademy/lxp-config.git"
         ARGOCD_CONFIG_REPO_PATH = "lxp-deployment/values-test.yaml"
-        ARGOCD_CONFIG_REPO_BRANCH = "master"
+        ARGOCD_CONFIG_REPO_BRANCH = "who-int"
+        SYSTEM_TEST_BRANCH = "master-who-int"
 
           // Job name contains the branch eg ds-app-feature%2Fjenkins-123
         JOB_NAME = "${JOB_NAME}".replace("%2F", "-").replace("/", "-")
@@ -247,7 +248,7 @@ pipeline {
                         }
                     }
                     when {
-                        expression { GIT_BRANCH ==~ /(.*master)/ }
+                        expression { GIT_BRANCH.startsWith("master") }
                     }
                     steps {
                         echo '### Commit new image tag to git ###'
@@ -378,13 +379,13 @@ pipeline {
                 }
             }
             when {
-                expression { GIT_BRANCH ==~ /(.*master)/ }
+                expression { GIT_BRANCH.startsWith("master") }
             }
             steps {
                 sh  '''
                     echo "TODO - Run tests"
                 '''
-                build job: 'system-tests/master', parameters: [[$class: 'StringParameterValue', name: 'APP_NAME', value: "${APP_NAME}" ],[$class: 'StringParameterValue', name: 'VERSION', value: "${VERSION}"]], wait: false
+                build job: "system-tests/${SYSTEM_TEST_BRANCH}", parameters: [[$class: 'StringParameterValue', name: 'APP_NAME', value: "${APP_NAME}" ],[$class: 'StringParameterValue', name: 'VERSION', value: "${VERSION}"]], wait: false
             }
         }
     }
