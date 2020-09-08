@@ -91,7 +91,7 @@ pipeline {
           stage("Build (Compile App)") {
             agent {
                 node {
-                    label "jenkins-slave-python38"
+                    label "jenkins-agent-python38"
                 }
             }
             steps {
@@ -179,7 +179,7 @@ pipeline {
   stage("Helm Package App (master)") {
             agent {
                 node {
-                    label "jenkins-slave-helm"
+                    label "jenkins-agent-helm"
                 }
             }
             steps {
@@ -219,7 +219,7 @@ pipeline {
                     }
                     agent {
                         node {
-                            label "jenkins-slave-helm"
+                            label "jenkins-agent-helm"
                         }
                     }
                     when {
@@ -241,7 +241,7 @@ pipeline {
                     }
                     agent {
                         node {
-                            label "jenkins-slave-argocd"
+                            label "jenkins-agent-argocd"
                         }
                     }
                     when {
@@ -336,7 +336,7 @@ pipeline {
                     }
                     agent {
                         node {
-                            label "jenkins-slave-zap"
+                            label "jenkins-agent-zap"
                         }
                     }
                     when {
