@@ -261,7 +261,7 @@ pipeline {
                             git config --global user.name "Jenkins"
                             git config --global push.default simple
                             git add ${ARGOCD_CONFIG_REPO_PATH}
-                            git commit -m "🚀 AUTOMATED COMMIT - Deployment new app version ${VERSION} 🚀" || rc=$?
+                            git commit -m "🚀 AUTOMATED COMMIT - Deployment of ${APP_NAME} at version ${VERSION} 🚀" || rc=$?
                             git remote set-url origin  https://${GIT_CREDS_USR}:${GIT_CREDS_PSW}@${ARGOCD_CONFIG_REPO}
                             git push -u origin ${ARGOCD_CONFIG_REPO_BRANCH}
                             # Give ArgoCD a moment to gather it's thoughts and roll out a deployment before Jenkins races on to test things
