@@ -12,6 +12,7 @@ pipeline {
         ARGOCD_CONFIG_REPO = "github.com/WHOAcademy/lxp-config.git"
         ARGOCD_CONFIG_REPO_PATH = "lxp-deployment/values-test.yaml"
         ARGOCD_CONFIG_REPO_BRANCH = "master"
+        SYSTEM_TEST_BRANCH = "master"
 
           // Job name contains the branch eg ds-app-feature%2Fjenkins-123
         JOB_NAME = "${JOB_NAME}".replace("%2F", "-").replace("/", "-")
@@ -91,7 +92,7 @@ pipeline {
           stage("Build (Compile App)") {
             agent {
                 node {
-                    label "jenkins-slave-python38"
+                    label "jenkins-agent-python38"
                 }
             }
             steps {
@@ -100,7 +101,7 @@ pipeline {
                     env.VERSIONED_APP_NAME = "${NAME}-${VERSION}"
                     env.PACKAGE = "${VERSIONED_APP_NAME}.tar.gz"
                     env.SECRET_KEY = 'gs7(p)fk=pf2(kbg*1wz$x+hnmw@y6%ij*x&pq4(^y8xjq$q#f' //TODO: get it from secret vault
-                    env.TEST_DATABASE_SERVICE_HOST = "test-postgresql.labs-dev"
+                    env.TEST_DATABASE_SERVICE_HOST = "postgresql-postgresql.labs-ci-cd"
                     env.TEST_DATABASE_SERVICE_PORT = "5432"
                 }
                 sh 'printenv'
@@ -110,7 +111,9 @@ pipeline {
 
                 echo '### Running tests ###'
                 sh 'python manage.py migrate --settings=lxp_course_service.settings.test'
-                sh 'python manage.py test --with-coverage --cover-erase --cover-package=course_app --with-xunit --xunit-file=xunittest.xml --cover-branches --cover-html --settings=lxp_course_service.settings.test'
+                sh 'coverage run manage.py test --settings=lxp_course_service.settings.test'
+                sh 'coverage report -m'
+                sh 'coverage html -d cover'
 
                 echo '### Packaging App for Nexus ###'
                 sh '''
@@ -179,7 +182,7 @@ pipeline {
   stage("Helm Package App (master)") {
             agent {
                 node {
-                    label "jenkins-slave-helm"
+                    label "jenkins-agent-helm"
                 }
             }
             steps {
@@ -219,7 +222,7 @@ pipeline {
                     }
                     agent {
                         node {
-                            label "jenkins-slave-helm"
+                            label "jenkins-agent-helm"
                         }
                     }
                     when {
@@ -241,11 +244,11 @@ pipeline {
                     }
                     agent {
                         node {
-                            label "jenkins-slave-argocd"
+                            label "jenkins-agent-argocd"
                         }
                     }
                     when {
-                        expression { GIT_BRANCH ==~ /(.*master)/ }
+                        expression { GIT_BRANCH.startsWith("master") }
                     }
                     steps {
                         echo '### Commit new image tag to git ###'
@@ -258,7 +261,7 @@ pipeline {
                             git config --global user.name "Jenkins"
                             git config --global push.default simple
                             git add ${ARGOCD_CONFIG_REPO_PATH}
-                            git commit -m "🚀 AUTOMATED COMMIT - Deployment new app version ${VERSION} 🚀" || rc=$?
+                            git commit -m "🚀 AUTOMATED COMMIT - Deployment of ${APP_NAME} at version ${VERSION} 🚀" || rc=$?
                             git remote set-url origin  https://${GIT_CREDS_USR}:${GIT_CREDS_PSW}@${ARGOCD_CONFIG_REPO}
                             git push -u origin ${ARGOCD_CONFIG_REPO_BRANCH}
                             # Give ArgoCD a moment to gather it's thoughts and roll out a deployment before Jenkins races on to test things
@@ -327,6 +330,45 @@ pipeline {
             }
         }
 
+        stage("Scan APIs") {
+            failFast true
+            parallel {
+                stage("sandbox - api scan"){
+                    options {
+                        skipDefaultCheckout(true)
+                    }
+                    agent {
+                        node {
+                            label "jenkins-agent-zap"
+                        }
+                    }
+                    when {
+                        expression { GIT_BRANCH.startsWith("dev") || GIT_BRANCH.startsWith("feature") || GIT_BRANCH.startsWith("fix") }
+                    }
+                    steps {
+                        sh '''
+                            /zap/zap-baseline.py -r index.html -t http://${APP_NAME}.${TARGET_NAMESPACE}:8080/api/courses || return_code=$?
+                            echo "exit value was  - " $return_code
+                        '''
+                    }
+                    post {
+                        always {
+                          // publish html
+                          publishHTML target: [
+                              allowMissing: false,
+                              alwaysLinkToLastBuild: false,
+                              keepAll: true,
+                              reportDir: '/zap/wrk',
+                              reportFiles: 'index.html',
+                              reportName: 'OWASP Zed Attack Proxy'
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+
+
         stage("Trigger System Tests") {
             options {
                 skipDefaultCheckout(true)
@@ -337,13 +379,13 @@ pipeline {
                 }
             }
             when {
-                expression { GIT_BRANCH ==~ /(.*master)/ }
+                expression { GIT_BRANCH.startsWith("master") }
             }
             steps {
                 sh  '''
                     echo "TODO - Run tests"
                 '''
-                build job: 'system-tests/master', parameters: [[$class: 'StringParameterValue', name: 'APP_NAME', value: "${APP_NAME}" ],[$class: 'StringParameterValue', name: 'VERSION', value: "${VERSION}"]], wait: false
+                build job: "system-tests/${SYSTEM_TEST_BRANCH}", parameters: [[$class: 'StringParameterValue', name: 'APP_NAME', value: "${APP_NAME}" ],[$class: 'StringParameterValue', name: 'VERSION', value: "${VERSION}"]], wait: false
             }
         }
     }
