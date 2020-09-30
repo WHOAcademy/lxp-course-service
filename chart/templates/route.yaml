@@ -12,14 +12,14 @@ spec:
   to:
     kind: Service
     name: {{ include "lxp-course-service.fullname" . }}
-    weight: 100
+    weight: {{ .Values.route.weight }}
+  {{- if .Values.route.alternateBackends }}
+  alternateBackends:
+  {{- toYaml .Values.route.alternateBackends | nindent 4 }}
+  {{- end }}
   wildcardPolicy: None
   tls:
     insecureEdgeTerminationPolicy: Redirect
     termination: edge
-status:
-  ingress:
-    - conditions:
-        - status: 'True'
-          type: Admitted
+status: {}
 {{ end }}

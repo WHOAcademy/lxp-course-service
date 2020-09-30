@@ -11,8 +11,12 @@ image_namespace: whoacademy
 image_tag: 1.1.1
 
 # OCP route
-route: true
-
+route:
+  weight: 50
+  alternateBackends: 
+  - kind: Service
+    name: dev-lxp-course-service
+    weight: 50
 
 #Django
 #have to get this from vault etc. maybe
